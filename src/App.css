@@ -36,3 +36,33 @@
     transform: rotate(360deg);
   }
 }
+
+/* Estilos para el cuerpo del popup de confirmación */
+.confirm-popup {
+  background-color: #fff; /* Color de fondo */
+  color: #333; /* Color del texto */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+/* Estilos para los botones del popup */
+.confirm-popup button {
+  padding: 10px 20px; /* Espaciado dentro del botón */
+  border: none; /* Sin borde */
+  border-radius: 4px; /* Bordes redondeados */
+  cursor: pointer; /* Cambiar el cursor al pasar por encima */
+}
+
+.confirm-popup button.primary {
+  background-color: #007bff; /* Color de fondo para el botón principal */
+  color: #fff; /* Color del texto para el botón principal */
+}
+
+.confirm-popup button.secondary {
+  background-color: #ccc; /* Color de fondo para el botón secundario */
+  color: #333; /* Color del texto para el botón secundario */
+}
+
+/* Estilos adicionales según sea necesario */
+

@@ -16,7 +16,7 @@ const ReportForm = () => {
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const ReportForm = () => {
       detalle: ''
     });
     setShowConfirmation(false);
-    setShowSuccessPopup(true);
+    setRegistrationSuccess(true);
   };
 
   const handleCancel = () => {
@@ -143,31 +143,57 @@ const ReportForm = () => {
       <Modal
         isOpen={showConfirmation}
         onRequestClose={handleCancel}
+        style={{
+          content: {
+            maxWidth: '400px',
+            maxHeight: '180px',
+            margin: 'auto',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            textAlign: 'center'
+          },
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }}
         contentLabel="Confirmación"
       >
         <div className="confirmation-popup-content">
           <h2>{confirmationMessage}</h2>
-          <div>
-            <button onClick={handleConfirm}>Sí</button>
-            <button onClick={handleCancel}>No</button>
+          <div className="button-container">
+            <button className="primary" onClick={handleConfirm}>Sí</button>
+            <button className="secondary" onClick={handleCancel}>No</button>
           </div>
         </div>
       </Modal>
-      {/* Componente de modal para mostrar el mensaje de éxito de registro */}
+
+      {/* Modal para mostrar el mensaje de registro exitoso */}
       <Modal
-        isOpen={showSuccessPopup}
-        onRequestClose={() => setShowSuccessPopup(false)}
-        contentLabel="Registro Exitoso"
+        isOpen={registrationSuccess}
+        onRequestClose={() => setRegistrationSuccess(false)}
+        style={{
+          content: {
+            maxWidth: '400px',
+            maxHeight: '180px',
+            margin: 'auto',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            textAlign: 'center'
+          },
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }}
       >
-        <div className="confirmation-popup-content">
+        <div className="registration-success-popup">
           <h2>El registro ha sido guardado exitosamente.</h2>
-          <div>
-          <button onClick={() => setShowSuccessPopup(false)}>Cerrar</button>
+          <button onClick={() => setRegistrationSuccess(false)}>Cerrar</button>
         </div>
-      </div>
-    </Modal>
-  </div>
-);
+      </Modal>
+    </div>
+  );
 };
 
 export default ReportForm;

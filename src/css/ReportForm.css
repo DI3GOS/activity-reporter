@@ -148,19 +148,66 @@
 }
 
 .confirmation-popup-content {
-  max-width: 400px; /* Define el ancho máximo del contenido del modal */
-  margin: 0 auto; /* Centra horizontalmente el contenido */
-  background-color: #fff; /* Color de fondo */
-  padding: 20px; /* Ajusta el espacio interno */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  text-align: center;
 }
 
 .confirmation-popup-content h2 {
   margin-bottom: 20px;
 }
 
-.confirmation-popup-content button {
-  margin-right: 10px;
+.confirmation-popup-content .button-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
 }
 
+.confirmation-popup-content button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.confirmation-popup-content button.primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.confirmation-popup-content button.primary:hover {
+  background-color: #0056b3;
+}
+
+.confirmation-popup-content button.secondary {
+  background-color: #ccc;
+  color: #333;
+}
+
+.confirmation-popup-content button.secondary:hover {
+  background-color: #999;
+}
+
+.registration-success-popup {
+  text-align: center;
+  padding: 20px;
+}
+
+.registration-success-popup button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+}
+
+.registration-success-popup button:hover {
+  background-color: #0056b3;
+}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Modal from 'react-modal'; // Importa el componente de modal de react-modal
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import '../css/ReportForm.css';
 
 const ReportForm = () => {
@@ -14,11 +15,8 @@ const ReportForm = () => {
     detalle: ''
   });
 
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [confirmationMessage, setConfirmationMessage] = useState('');
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
-
   const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
@@ -31,8 +29,22 @@ const ReportForm = () => {
 
   const handleAddActivity = (e) => {
     e.preventDefault();
-    setConfirmationMessage("¿Estás seguro de que deseas agregar esta actividad?");
-    setShowConfirmation(true);
+    MySwal.fire({
+      title: '¿Estás seguro de que deseas agregar esta actividad?',
+      showCancelButton: true,
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'No',
+      customClass: {
+        popup: 'swal2-popup',
+        title: 'swal2-title',
+        confirmButton: 'swal2-confirm',
+        cancelButton: 'swal2-cancel'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleConfirm();
+      }
+    });
   };
 
   const handleConfirm = () => {
@@ -44,12 +56,16 @@ const ReportForm = () => {
       nombre: '',
       detalle: ''
     });
-    setShowConfirmation(false);
-    setRegistrationSuccess(true);
-  };
-
-  const handleCancel = () => {
-    setShowConfirmation(false);
+    MySwal.fire({
+      title: 'El registro ha sido guardado exitosamente.',
+      icon: 'success',
+      confirmButtonText: 'Cerrar',
+      customClass: {
+        popup: 'swal2-popup',
+        title: 'swal2-title',
+        confirmButton: 'swal2-confirm'
+      }
+    });
   };
 
   const handleLogout = () => {
@@ -139,59 +155,6 @@ const ReportForm = () => {
         <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
       </div>
       {renderFormFields()}
-      {/* Componente de modal para mostrar el mensaje de confirmación */}
-      <Modal
-        isOpen={showConfirmation}
-        onRequestClose={handleCancel}
-        style={{
-          content: {
-            maxWidth: '400px',
-            maxHeight: '180px',
-            margin: 'auto',
-            padding: '20px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            textAlign: 'center'
-          },
-          overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }}
-        contentLabel="Confirmación"
-      >
-        <div className="confirmation-popup-content">
-          <h2>{confirmationMessage}</h2>
-          <div className="button-container">
-            <button className="primary" onClick={handleConfirm}>Sí</button>
-            <button className="secondary" onClick={handleCancel}>No</button>
-          </div>
-        </div>
-      </Modal>
-
-      {/* Modal para mostrar el mensaje de registro exitoso */}
-      <Modal
-        isOpen={registrationSuccess}
-        onRequestClose={() => setRegistrationSuccess(false)}
-        style={{
-          content: {
-            maxWidth: '400px',
-            maxHeight: '180px',
-            margin: 'auto',
-            padding: '20px',
-            borderRadius: '8px',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            textAlign: 'center'
-          },
-          overlay: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }}
-      >
-        <div className="registration-success-popup">
-          <h2>El registro ha sido guardado exitosamente.</h2>
-          <button onClick={() => setRegistrationSuccess(false)}>Cerrar</button>
-        </div>
-      </Modal>
     </div>
   );
 };

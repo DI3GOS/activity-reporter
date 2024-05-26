@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -7,16 +7,35 @@ import '../css/ReportForm.css';
 const ReportForm = () => {
   const [selectedOption, setSelectedOption] = useState('registro');
   const [activities, setActivities] = useState([]);
+  const [filteredActivities, setFilteredActivities] = useState([]);
   const [newActivity, setNewActivity] = useState({
     fecha: '',
     horaInicio: '',
     horaFin: '',
     nombre: '',
-    detalle: ''
+    detalle: '',
+    usuario: ''
   });
+
+  const [searchUser, setSearchUser] = useState('');
+  const [searchActivity, setSearchActivity] = useState('');
 
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setNewActivity((prevActivity) => ({
+        ...prevActivity,
+        usuario: storedUsername
+      }));
+    }
+  }, []);
+
+  useEffect(() => {
+    filterActivities();
+  }, [searchUser, searchActivity, activities]);
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
@@ -25,6 +44,14 @@ const ReportForm = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewActivity({ ...newActivity, [name]: value });
+  };
+
+  const handleSearchUserChange = (e) => {
+    setSearchUser(e.target.value);
+  };
+
+  const handleSearchActivityChange = (e) => {
+    setSearchActivity(e.target.value);
   };
 
   const handleAddActivity = (e) => {
@@ -54,7 +81,9 @@ const ReportForm = () => {
       horaInicio: '',
       horaFin: '',
       nombre: '',
-      detalle: ''
+      detalle: '',
+      usuario: localStorage.getItem('username')
+
     });
     MySwal.fire({
       title: 'El registro ha sido guardado exitosamente.',
@@ -69,8 +98,26 @@ const ReportForm = () => {
   };
 
   const handleLogout = () => {
-    // Lógica para cerrar sesión, por ejemplo, limpiar el estado de autenticación
+    localStorage.removeItem('username');
     navigate('/');
+  };
+
+  const filterActivities = () => {
+    let filtered = activities;
+
+    if (searchUser) {
+      filtered = filtered.filter((activity) =>
+        activity.usuario.toLowerCase().includes(searchUser.toLowerCase())
+      );
+    }
+
+    if (searchActivity) {
+      filtered = filtered.filter((activity) =>
+        activity.nombre.toLowerCase().includes(searchActivity.toLowerCase())
+      );
+    }
+
+    setFilteredActivities(filtered);
   };
 
   const renderFormFields = () => {
@@ -109,6 +156,16 @@ const ReportForm = () => {
       return (
         <div className="form-fields">
           <h3>CONSULTAR ACTIVIDADES</h3>
+          <div className="search-fields">
+            <div>
+              <label>Buscar por Usuario:</label>
+              <input type="text" value={searchUser} onChange={handleSearchUserChange} />
+            </div>
+            <div>
+              <label>Buscar por Nombre de Actividad:</label>
+              <input type="text" value={searchActivity} onChange={handleSearchActivityChange} />
+            </div>
+          </div>
           <table className="table">
             <thead>
               <tr>
@@ -117,16 +174,18 @@ const ReportForm = () => {
                 <th>Hora Fin</th>
                 <th>Nombre de Actividad</th>
                 <th>Detalle de Actividad</th>
+                <th>Usuario</th>
               </tr>
             </thead>
             <tbody>
-              {activities.map((activity, index) => (
+              {filteredActivities.map((activity, index) => (
                 <tr key={index}>
                   <td>{activity.fecha}</td>
                   <td>{activity.horaInicio}</td>
                   <td>{activity.horaFin}</td>
                   <td>{activity.nombre}</td>
                   <td>{activity.detalle}</td>
+                  <td>{activity.usuario}</td>
                 </tr>
               ))}
             </tbody>

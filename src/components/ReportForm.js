@@ -56,6 +56,27 @@ const ReportForm = () => {
 
   const handleAddActivity = (e) => {
     e.preventDefault();
+    const currentYear = new Date().getFullYear();
+    const currentDateTime = new Date().toISOString().slice(0, 16);
+    const { fecha, horaInicio, horaFin } = newActivity;
+
+    if (fecha.substring(0, 4) < currentYear) {
+      MySwal.fire({
+        title: 'Error',
+        text: 'El año no puede ser inferior al año actual.',
+        icon: 'error'
+      });
+      return;
+    }
+
+    if (horaFin < horaInicio) {
+      MySwal.fire({
+        title: 'Error',
+        text: 'La hora fin no puede ser inferior a la hora de inicio.',
+        icon: 'error'
+      });
+      return;
+    }
     MySwal.fire({
       title: '¿Estás seguro de que deseas agregar esta actividad?',
       showCancelButton: true,

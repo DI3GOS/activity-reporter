@@ -69,7 +69,7 @@ const ReportForm = () => {
       return;
     }
 
-    if (horaFin < horaInicio) {
+    if (horaFin <= horaInicio) {
       MySwal.fire({
         title: 'Error',
         text: 'La hora fin no puede ser inferior a la hora de inicio.',

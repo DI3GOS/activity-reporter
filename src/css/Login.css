@@ -54,4 +54,11 @@ body {
 
 .login-form button:hover {
   background-color: #1d5b9e;
+  align-items: center;
+}
+
+.login-form label {
+  display: block; /* Mostrar las etiquetas como bloques */
+  font-weight: bold; /* Texto en negrita */
+  margin-bottom: 5px; /* Espaciado inferior */
 }

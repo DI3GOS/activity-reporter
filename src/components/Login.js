@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import axios from 'axios';  // Importar axios
 import '../css/Login.css';
 
 const Login = () => {
@@ -10,16 +11,23 @@ const Login = () => {
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Guardar el nombre de usuario en localStorage
-    localStorage.setItem('username', username);
-    // Aquí iría la lógica de autenticación real. Para este ejemplo, usaremos una autenticación simple.
-    if (username === 'diego' && password === '1') {
-      // Redirigir a la página de reportes si el login es exitoso
-      navigate('/report');
-    } else {
-     // alert('Credenciales incorrectas');
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/login', {
+        username,
+        password,
+      });
+
+      if (response.status === 200) {
+        // Guardar el nombre de usuario en localStorage
+        localStorage.setItem('username', username);
+        // Redirigir a la página de reportes si el login es exitoso
+        navigate('/report');
+      }
+    } catch (error) {
+      console.error('Error de autenticación:', error.response);
       MySwal.fire({
         title: 'Credenciales incorrectas',
         icon: 'error',
@@ -27,8 +35,8 @@ const Login = () => {
         customClass: {
           popup: 'swal2-popup',
           title: 'swal2-title',
-          confirmButton: 'swal2-confirm'
-        }
+          confirmButton: 'swal2-confirm',
+        },
       });
     }
   };
